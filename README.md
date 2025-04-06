@@ -19,10 +19,10 @@ Qlio is a minimalist productivity web app built with Spring Boot and Thymeleaf. 
 > Below are the final screenshots of Qlio running in both light and dark modes:
 
 ### 🌤️ Light Mode
-![Qlio Light Mode](screenshots/light-mode.png)
+![Qlio Light Mode](Light.png)
 
 ### 🌙 Dark Mode
-![Qlio Dark Mode](screenshots/dark-mode.png)
+![Qlio Dark Mode](Dark.png)
 
 Make sure to update the `screenshots/` directory with these images in your repo.
 
