@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Qlio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('/light_bg.png');
+            background-size: cover;
+            background-position: center;
+            color: #000;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .dark-mode {
+            background-image: url('/dark_bg.png');
+            color: #fff;
+        }
+
+        h1 {
+            font-weight: bold;
+            color: #81d742;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .subheading {
+            text-align: center;
+            color: #444;
+            margin-bottom: 40px;
+        }
+
+        .dark-mode .subheading {
+            color: #aaa;
+        }
+
+        .task-input {
+            background-color: #f0f0f0;
+            border: none;
+            color: #000;
+            padding: 10px 15px;
+            border-radius: 12px;
+            width: 100%;
+        }
+
+        .dark-mode .task-input {
+            background-color: #2c2c2e;
+            color: #fff;
+        }
+
+        .btn-add {
+            background-color: #81d742;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 12px;
+            padding: 10px 20px;
+        }
+
+        .task-card {
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dark-mode .task-card {
+            background-color: #2c2c2e;
+        }
+
+        .circle-icon {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #888;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 12px;
+        }
+
+        .circle-icon.completed {
+            background-color: #81d742;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #1c1c1e;
+            font-size: 12px;
+        }
+
+        .task-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            flex-grow: 1;
+            color: #000;
+        }
+
+        .dark-mode .task-title {
+            color: #fff;
+        }
+
+        .task-title.completed {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+
+        .btn-delete {
+            border: none;
+            padding: 5px 12px;
+            border-radius: 8px;
+            margin-left: 10px;
+            background-color: transparent;
+            color: #81d742;
+        }
+
+        form input::placeholder {
+            color: #777;
+        }
+
+        .dark-mode form input::placeholder {
+            color: #bbb;
+        }
+
+        .circle-icon:hover {
+            cursor: pointer;
+        }
+
+        .task-card:hover {
+            background-color: rgba(255, 255, 255, 0.95);
+            transition: background-color 0.3s ease;
+        }
+
+        /* Mode toggle */
+        .mode-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .toggle-switch {
+    position: relative;
+    width: 80px;
+    height: 40px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: 0.4s;
+    background-image: url('/sun.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover; /* This ensures full coverage */
+    overflow: hidden;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 34px;
+    width: 34px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #444;
+    background-image: url('/moon.png');
+    background-position: center center;
+    background-size: cover;
+}
+
+input:checked + .slider:before {
+    transform: translateX(40px);
+}
+
+    </style>
+</head>
+<body id="qlio-body">
+
+<!-- Mode toggle -->
+<div class="mode-toggle">
+    <label class="toggle-switch">
+        <input type="checkbox" id="modeSwitch">
+        <span class="slider"></span>
+    </label>
+</div>
+
+<h1>Qlio</h1>
+<p class="subheading">Get things done</p>
+
+<div class="container" style="max-width: 600px;">
+    <form action="/tasks" method="post" class="d-flex mb-4">
+        <input type="text" name="title" class="task-input me-2" placeholder="Add a new task..." required>
+        <button type="submit" class="btn btn-add">Add</button>
+    </form>
+
+    <th:block th:each="task : ${tasks}">
+        <div class="task-card">
+            <div class="d-flex align-items-center">
+                <a th:href="@{/tasks/{id}/toggle(id=${task.id})}" th:classappend="${task.completed} ? 'completed circle-icon' : 'circle-icon'">
+                    <span th:if="${task.completed}" class="text-dark">&#10003;</span>
+                </a>
+                <span th:class="${task.completed} ? 'task-title completed' : 'task-title'" th:text="${task.title}">Task Title</span>
+            </div>
+            <div>
+                <a th:href="@{/tasks/{id}/delete(id=${task.id})}" class="btn btn-delete">Delete</a>
+            </div>
+        </div>
+    </th:block>
+</div>
+
+<!-- Theme logic -->
+<script>
+    const modeSwitch = document.getElementById('modeSwitch');
+    const body = document.getElementById('qlio-body');
+
+    modeSwitch.addEventListener('change', function () {
+        if (modeSwitch.checked) {
+            body.classList.add('dark-mode');
+            body.style.backgroundImage = "url('/dark_bg.png')";
+        } else {
+            body.classList.remove('dark-mode');
+            body.style.backgroundImage = "url('/light_bg.png')";
+        }
+    });
+</script>
+
+</body>
+</html>
