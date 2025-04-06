@@ -1,7 +1,7 @@
 # Qlio
 
 Qlio is a minimalist productivity web app built with Spring Boot and Thymeleaf. It helps you manage your daily tasks with an intuitive, responsive interface and a clean light/dark mode toggle.
-
+![Qlio](Qlio.png)
 ---
 
 ## Features
