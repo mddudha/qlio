@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: qlio-app
+    env: docker
+    plan: free
+    region: oregon
+    autoDeploy: true
+  
